@@ -11,20 +11,20 @@ import java.util.Date;
 public class MatchRoomDto {
 
     @Data
-    public class MatchRequestDto {
+    public static class MatchRequestDto {
         @NotNull
         private Long UserId;
     }
 
     @Data
-    public class SearchRoomRequestDto {
+    public static class SearchRoomRequestDto {
         @NotNull
         private String searchWord;
     }
 
     @Data
     @Builder
-    public class MatchResponseDto {
+    public static class MatchResponseDto {
         @NotNull
         private Long matchId;
         @NotNull
