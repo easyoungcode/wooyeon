@@ -4,30 +4,50 @@ import com.wooyeon.yeon.chat.domain.Chat;
 import com.wooyeon.yeon.chat.dto.ChatDto;
 import com.wooyeon.yeon.chat.dto.MatchRoomDto;
 import com.wooyeon.yeon.chat.repository.ChatRepository;
-import com.wooyeon.yeon.profileChoice.domain.UserMatch;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ChatService {
     private final ChatRepository chatRepository;
 
-    public MatchRoomDto.MatchResponseDto getMatchRoomList(MatchRoomDto.MatchRequestDto matchRequestDto) {
+    public List<MatchRoomDto.MatchResponseDto> searchMatchRoomList(MatchRoomDto.SearchRoomRequestDto SearchRoomRequest) {
 
-        // 매치 테이블에서 유저 아이디로 리스트 조회하는 거 희수가 만들어야함
-        
-        return MatchRoomDto.MatchResponseDto.builder()
-                .matchId(1L)
-                .matchUserName("kim") // 유저 아이디로 유저 테이블에서 조회
-                .matchUserProfileImg("url") // 유저 아이디로 유저 테이블에서 조회
-                .recentMessage("hello") // null 값 가능 채팅 테이블에서 조회
-                .sendTime(new Timestamp(1l)) // null 값 가능 채팅 테이블에서 조회
-                .build();
+        // 단어로 매치 테이블에서 검색 리스트 찾는 거 받아오기 -> sql 조건문 사용
+        List<MatchRoomDto.MatchResponseDto> matchRoomList = new ArrayList<>();
+
+        for (MatchRoomDto.MatchResponseDto room : matchRoomList) {
+            MatchRoomDto.MatchResponseDto.builder()
+                    .matchId(1L) // 매치 테이블 아이디
+                    .matchUserName("youngdon") // 매치 테이블 자신 말고 타인
+                    .matchUserProfileImg(null)
+                    .recentMessage(null)
+                    .sendTime(null)
+                    .build();
+        }
+        return matchRoomList;
     }
 
+    public List<MatchRoomDto.MatchResponseDto> getMatchRoomList(MatchRoomDto.MatchRequestDto matchRequestDto) {
+
+        // 접속자 아이디로 매치 테이블에서 전체 리스트 찾는 거 받아오기
+        List<MatchRoomDto.MatchResponseDto> matchRoomList = new ArrayList<>();
+
+        for (MatchRoomDto.MatchResponseDto room : matchRoomList) {
+            MatchRoomDto.MatchResponseDto.builder()
+                    .matchId(1L) // 매치 테이블 아이디
+                    .matchUserName("youngdon") // 매치 테이블 자신 말고 타인
+                    .matchUserProfileImg(null)
+                    .recentMessage(null)
+                    .sendTime(null)
+                    .build();
+        }
+        return matchRoomList;
+    }
 
     // 클라이언트에서 전달받은 chatDto(메시지 정보) DB에 저장
     public void insertChat(ChatDto chatDto) {
