@@ -1,26 +1,22 @@
 package com.wooyeon.yeon.chat.controller;
 
-import com.wooyeon.yeon.chat.dto.ChatDto;
+import com.wooyeon.yeon.chat.dto.MatchRoomDto;
+import com.wooyeon.yeon.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.lang.reflect.Array;
 
 @RestController
 @RequiredArgsConstructor
 public class ChatController {
-    private final SimpMessageSendingOperations simpMessageSendingOperations;
+    ChatService chatService;
 
-    /*
-        /queue/chat/room/{matchId}    - 구독
-        /app/chat/message             - 메시지 발생
-    */
-
-    @MessageMapping("/chat/message")
-    public void enter(ChatDto message) {
-        if (ChatDto.MessageType.ENTER.equals(message.getType())) {
-            message.setMessage(message.getSender()+"님이 입장하였습니다.");
-        }
-        simpMessageSendingOperations.convertAndSend("/queue/chat/room/"+message.getRoomId(),message);
+    public MatchRoomDto.MatchResponseDto getMatchRoomList(
+            @RequestBody MatchRoomDto.MatchRequestDto matchRequestDto) {
+        return chatService.getMatchRoomList(matchRequestDto);
     }
+
+
 }
