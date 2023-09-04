@@ -2,71 +2,56 @@ package com.wooyeon.yeon.user.domain;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+//(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
 
-    @Column(length = 11, nullable = false)
-    private String phone;
-
-    @Column(nullable = false)
-    private char gender;
-
-    @Column(length = 50, nullable = false)
-    private String nickname;
-
-    @Column
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
-    private List<ProfilePhoto> profilePhotos=new ArrayList<>();
-
-    @Column(length = 8, nullable = false)
-    private String birthday;
-
     @Column(length = 100, nullable = false)
     private String email;
 
-    @Column(length = 100, nullable = false)
-    private String locationInfo;
+    @Column(length = 11)
+    private String phone;
 
-    @Column(length = 100, nullable = false)
-    private String gpsLocationInfo;
+    @Column(unique = true, columnDefinition = "BINARY(16)")
+    private UUID userCode;
 
-    @Column(length = 4)
-    private String mbti;
+    private String accessToken;
 
-    @Column(length = 50)
-    private String intro;
+    private String refreshToken;
 
-    @Column
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
-    private List<Hobby> hobbys=new ArrayList<>();
-
-    @Column
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "user")
-    private List<Interest> interests=new ArrayList<>();
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROFILE_ID")
+//    @Column(unique = true)
+    private Profile profile;
 
     @Builder
-    public User(Long userId, String phone, char gender, String nickname, List<ProfilePhoto> profilePhotos, String birthday, String email, String locationInfo, String gpsLocationInfo, String mbti, String intro, List<Hobby> hobbys, List<Interest> interests) {
+    public User(Long userId, String email, String phone, UUID userCode, String accessToken, String refreshToken) {
         this.userId=userId;
-        this.phone=phone;
-        this.gender=gender;
-        this.nickname=nickname;
-        this.profilePhotos=profilePhotos;
-        this.birthday=birthday;
         this.email=email;
-        this.locationInfo=locationInfo;
-        this.gpsLocationInfo=gpsLocationInfo;
-        this.mbti=mbti;
-        this.intro=intro;
-        this.hobbys=hobbys;
-        this.interests=interests;
+        this.phone=phone;
+        this.userCode=userCode;
+        this.accessToken=accessToken;
+        this.refreshToken=refreshToken;
     }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken=refreshToken;
+    }
+    public void updateAccessToken(String accessToken) {
+        this.accessToken=accessToken;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+
 }

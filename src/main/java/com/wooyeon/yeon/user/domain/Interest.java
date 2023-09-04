@@ -5,9 +5,10 @@ import javax.persistence.*;
 @Entity
 public class Interest {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long interestId;
     private String interest;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID")
-    private User user;
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "PROFILE_ID")
+    private Profile profile;
 }

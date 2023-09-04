@@ -1,7 +1,20 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.google.cloud.tools:appengine-gradle-plugin:2.2.0'
+    }
+    ext {
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.13'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'com.wooyeon'
@@ -21,17 +34,54 @@ repositories {
     mavenCentral()
 }
 
+apply plugin: 'com.google.cloud.tools.appengine'
+appengine {  // App Engine tasks configuration
+    deploy {   // deploy configuration
+        projectId = 'our-audio-394406' // gcloud config set project
+        version = '6'   // gcloud to generate a version
+    }
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    // javamail
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+    // spring security
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // org.apache.httpcomponents.client5/httpclient5
+    implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.2.1'
+    // org.apache.httpcomponents/httpclient
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+    // thymeleaf
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    //querydsl
+    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 }
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+    jpa = true
+    querydslSourcesDir = querydslDir
+}
+sourceSets {
+    main.java.srcDir querydslDir
+}
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
 }
