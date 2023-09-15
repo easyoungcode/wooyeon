@@ -1,5 +1,7 @@
 package com.wooyeon.yeon.chat.dto;
 
+import com.wooyeon.yeon.likeManage.domain.UserLike;
+import com.wooyeon.yeon.user.domain.User;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -13,7 +15,7 @@ public class MatchRoomDto {
     @Data
     public static class MatchRequestDto {
         @NotNull
-        private Long UserId;
+        private Long userId;
     }
 
     @Data
@@ -28,7 +30,7 @@ public class MatchRoomDto {
         @NotNull
         private Long matchId;
         @NotNull
-        private String matchUserName;
+        private UserLike matchUserName;
         private String matchUserProfileImg;
         private String recentMessage;
         private Timestamp sendTime;
