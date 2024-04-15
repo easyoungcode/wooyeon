@@ -1,5 +1,10 @@
 <h1>우연히 마주친 우리의 인연, 소개팅 앱 Wooyeon</h1>
 
+# 시연영상
+<div align="center">
+    
+[![Video Label](http://img.youtube.com/vi/bg3zNYL9MQU/0.jpg)](https://youtu.be/bg3zNYL9MQU)
+</div>
 
 - 담당 브랜치 : feature/join(전체), feature/login(USER_ROLES 등 일부 구현)
 
